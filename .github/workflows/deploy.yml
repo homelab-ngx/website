@@ -1,0 +1,54 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # seite is pre-1.0: pinned to a release and its checksum. To upgrade,
+      # change both and run `seite upgrade` locally with the same version.
+      - name: Install seite
+        env:
+          SEITE_VERSION: v0.21.3
+          SEITE_SHA256: 2d16215c2b993cceefa56910cd0494711e08de92daf36ceca1ddeb16e19eca6f
+        run: |
+          curl -fsSLO "https://github.com/seite-sh/seite/releases/download/$SEITE_VERSION/seite-x86_64-unknown-linux-gnu.tar.gz"
+          echo "$SEITE_SHA256  seite-x86_64-unknown-linux-gnu.tar.gz" | sha256sum -c
+          mkdir -p "$HOME/.local/bin"
+          tar -xzf seite-x86_64-unknown-linux-gnu.tar.gz -C "$HOME/.local/bin" seite
+          rm seite-x86_64-unknown-linux-gnu.tar.gz
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Build site
+        run: seite --version && seite build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

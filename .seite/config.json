@@ -1,0 +1,11 @@
+{
+  "version": "0.21.3",
+  "initialized_at": "2026-11-18T13:05:44.511100+00:00",
+  "agents": [
+    "claude"
+  ],
+  "hooks_installed": [
+    "claude",
+    "claude:post-edit"
+  ]
+}

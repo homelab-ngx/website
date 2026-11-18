@@ -1,0 +1,65 @@
+[site]
+title = "homelab-ngx"
+description = "A home server whose core is not touched when a service updates."
+base_url = "https://homelab-ngx.com"
+language = "en"
+author = "homelab-ngx"
+# Time zone for "today" (scheduled posts, dates of new content). Set, it keeps
+# "today" identical on every machine and in CI; unset, each machine uses its own clock.
+timezone = "Europe/Stockholm"
+
+[[collections]]
+name = "pages"
+label = "Pages"
+directory = "pages"
+has_date = false
+has_rss = false
+listed = false
+url_prefix = ""
+nested = false
+default_template = "page.html"
+
+[collections.fields.description]
+type = "string"
+description = "Summary for search results and social cards (aim for 50–160 characters)"
+
+[collections.fields.image]
+type = "image"
+description = "Social preview image (og:image): a path under static/ or a URL"
+
+[build]
+output_dir = "dist"
+content_dir = "content"
+template_dir = "templates"
+static_dir = "static"
+data_dir = "data"
+public_dir = "public"
+minify = true
+# Hide posts dated in the future until their date (and `expires:` posts after it).
+# The generated deploy workflow rebuilds daily so they go live on their own.
+schedule = true
+# Full-text search over page text (dist/search/), loaded lazily by the theme.
+# "basic" searches titles, descriptions and tags only; false turns search off.
+search = "full"
+
+[deploy]
+target = "github-pages"
+domain = "homelab-ngx.com"
+auto_commit = true
+
+[languages]
+
+[images]
+widths = [
+    480,
+    800,
+    1200,
+]
+quality = 80
+lazy_loading = true
+webp = true
+avif_quality = 70
+
+[og]
+generate = true
+template = "default"

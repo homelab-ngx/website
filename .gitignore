@@ -1,0 +1,6 @@
+/dist
+/dist-subdomains
+/.seite/docs/
+/.seite/dev.json
+/.seite/cache/
+/.seite/upgrade-brief.md
