@@ -4,3 +4,8 @@
 /.seite/dev.json
 /.seite/cache/
 /.seite/upgrade-brief.md
+
+# Agent files: seite writes them, and no org repo tracks them.
+/AGENTS.md
+/CLAUDE.md
+/.claude/
